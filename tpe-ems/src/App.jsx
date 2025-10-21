@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import EmployeesList from "./features/employees/EmployeesList";
@@ -10,22 +10,50 @@ import LoginPage from "./features/auth/LoginPage";
 function App() {
   return (
     <Router>
-      <div className="flex">
-        {/* Sidebar for navigation */}
-        <Sidebar />
-
-        {/* Page Content */}
-        <div className="flex-1 p-6">
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/employees" element={<EmployeesList />} />
-            <Route path="/departments" element={<DepartmentsPage />} />
-            <Route path="/leaves" element={<LeavesPage />} />
-            <Route path="/attendance" element={<AttendancePage />} />
-          </Routes>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={
+          <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6">
+              <Dashboard />
+            </div>
+          </div>
+        } />
+        <Route path="/employees" element={
+          <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6">
+              <EmployeesList />
+            </div>
+          </div>
+        } />
+        <Route path="/departments" element={
+          <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6">
+              <DepartmentsPage />
+            </div>
+          </div>
+        } />
+        <Route path="/leaves" element={
+          <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6">
+              <LeavesPage />
+            </div>
+          </div>
+        } />
+        <Route path="/attendance" element={
+          <div className="flex">
+            <Sidebar />
+            <div className="flex-1 p-6">
+              <AttendancePage />
+            </div>
+          </div>
+        } />
+      </Routes>
     </Router>
   );
 }

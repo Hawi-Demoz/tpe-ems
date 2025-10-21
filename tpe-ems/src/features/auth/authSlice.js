@@ -35,8 +35,13 @@ const authSlice = createSlice({
     },
 /*************  ✨ Windsurf Command ⭐  *************/
 /**
-
-/*******  cd4f5ec8-1e52-47e4-bb1b-57f52236f388  *******/
+ * Clears the error state in the auth slice.
+ * This can be used to reset the error state after a successful login or logout.
+ * @function clearError
+ * @param {Object} state The state of the auth slice.
+ * @returns {void} Nothing is returned.
+ */
+/*******  cd4f5ec8-1e52-47e4-bb1b-57f52236f388  *******/    
     clearError: (state) => {
       state.error = null;
     },
