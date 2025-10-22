@@ -1,11 +1,11 @@
 // src/components/Sidebar.jsx
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
-  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '📊', roles: ['admin', 'manager', 'employee'] },
@@ -20,39 +20,72 @@ const Sidebar = () => {
   );
 
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 shadow-lg z-10">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-white">TPE EMS</h1>
-        <p className="text-gray-400 text-sm mt-1">Employee Management System</p>
+    <div
+      className={`fixed left-0 top-0 h-full bg-gray-800 shadow-lg z-10 transition-[width] duration-300 overflow-hidden ${
+        collapsed ? 'w-16' : 'w-64'
+      }`}
+    >
+      {/* Collapse/Expand Button */}
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        className="absolute -right-3 top-6 z-20 w-6 h-6 rounded-full bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 flex items-center justify-center text-xs"
+        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        title={collapsed ? 'Expand' : 'Collapse'}
+      >
+        {collapsed ? '›' : '‹'}
+      </button>
+
+      {/* Header */}
+      <div className={`p-6 ${collapsed ? 'px-4' : ''}`}>
+        {collapsed ? (
+          <div className="w-10 h-10 rounded-lg bg-[#3B378C] flex items-center justify-center text-white font-bold text-lg">
+            T
+          </div>
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold text-white">TPE EMS</h1>
+            <p className="text-gray-400 text-sm mt-1">Employee Management System</p>
+          </>
+        )}
       </div>
-      
-      <nav className="mt-6">
+
+      {/* Navigation */}
+      <nav className="mt-3">
         {filteredNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200 ${
-                isActive ? 'bg-gray-700 border-l-4 border-blue-500 text-white' : ''
+              `group flex items-center ${collapsed ? 'justify-center px-3' : 'px-6'} py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200 ${
+                isActive ? 'bg-gray-700 border-l-4 border-[#3B378C] text-white' : ''
               }`
             }
           >
-            <span className="mr-3 text-xl">{item.icon}</span>
-            <span>{item.name}</span>
+            <span className={`text-xl ${collapsed ? '' : 'mr-3'}`}>{item.icon}</span>
+            {!collapsed && <span className="truncate">{item.name}</span>}
           </NavLink>
         ))}
       </nav>
-      
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-            {user?.name?.charAt(0).toUpperCase()}
+
+      {/* Footer (User Info) */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+        {collapsed ? (
+          <div className="flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[#3B378C] flex items-center justify-center text-white font-bold">
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
           </div>
-          <div className="ml-3">
-            <p className="text-white font-medium">{user?.name}</p>
-            <p className="text-gray-400 text-sm capitalize">{user?.role}</p>
+        ) : (
+          <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full bg-[#3B378C] flex items-center justify-center text-white font-bold">
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            <div className="ml-3">
+              <p className="text-white font-medium">{user?.name}</p>
+              <p className="text-gray-400 text-sm capitalize">{user?.role}</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
