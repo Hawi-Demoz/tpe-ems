@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
-import EmployeesList from "./features/employees/EmployeesList";
+import EmployeesPage from "./features/employees/EmployeesPage";
 import DepartmentsPage from "./features/departments/DepartmentsPage";
 import LeavesPage from "./features/leaves/LeavesPage";
 import AttendancePage from "./features/attendance/AttendancePage";
@@ -13,45 +15,66 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
+        
+        {/* Protected Routes */}
         <Route path="/dashboard" element={
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-6">
-              <Dashboard />
+          <ProtectedRoute allowedRoles={['admin', 'manager', 'employee']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Dashboard" />
+                <Dashboard />
+              </div>
             </div>
-          </div>
+          </ProtectedRoute>
         } />
+        
         <Route path="/employees" element={
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-6">
-              <EmployeesList />
+          <ProtectedRoute allowedRoles={['admin']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Employees" />
+                <EmployeesPage />
+              </div>
             </div>
-          </div>
+          </ProtectedRoute>
         } />
+        
         <Route path="/departments" element={
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-6">
-              <DepartmentsPage />
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Departments" />
+                <DepartmentsPage />
+              </div>
             </div>
-          </div>
+          </ProtectedRoute>
         } />
+        
         <Route path="/leaves" element={
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-6">
-              <LeavesPage />
+          <ProtectedRoute allowedRoles={['admin', 'manager', 'employee']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Leaves" />
+                <LeavesPage />
+              </div>
             </div>
-          </div>
+          </ProtectedRoute>
         } />
+        
         <Route path="/attendance" element={
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 p-6">
-              <AttendancePage />
+          <ProtectedRoute allowedRoles={['admin', 'manager', 'employee']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Attendance" />
+                <AttendancePage />
+              </div>
             </div>
-          </div>
+          </ProtectedRoute>
         } />
       </Routes>
     </Router>

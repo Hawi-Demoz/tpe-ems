@@ -1,29 +1,19 @@
-// src/components/ProtectedRoute.jsx
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ children, requiredRole }) => {
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const location = useLocation();
 
+  // If not authenticated, redirect to login
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (requiredRole && user?.role !== requiredRole) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-gray-100">
-        <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl max-w-md">
-          <h2 className="text-2xl font-bold mb-4 text-red-400">Access Denied</h2>
-          <p className="text-gray-300 mb-4">
-            You don't have permission to access this page.
-          </p>
-          <p className="text-sm text-gray-400">
-            Required role: {requiredRole.charAt(0).toUpperCase() + requiredRole.slice(1)}
-          </p>
-        </div>
-      </div>
-    );
+  // If user has no role or role is not in allowed roles, redirect to dashboard
+  if (allowedRoles.length > 0 && (!user?.role || !allowedRoles.includes(user.role))) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
