@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, clearError } from './authSlice';
-import ThemeToggle from '../../components/ThemeToggle';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -55,10 +54,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-white dark:bg-gray-900 transition-all duration-500 font-inter relative">
-      {/* Theme Toggle */}
-      <div className="fixed top-5 right-6 z-50">
-        <ThemeToggle />
-      </div>
+      {/* Theme toggle removed */}
 
       {/* Header */}
       <div className="text-center mb-10 space-y-2">
