@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import EmployeesPage from "./features/employees/EmployeesPage";
+import AddEmployeePage from "./features/employees/AddEmployeePage";
 import DepartmentsPage from "./features/departments/DepartmentsPage";
 import LeavesPage from "./features/leaves/LeavesPage";
 import AttendancePage from "./features/attendance/AttendancePage";
@@ -37,6 +38,17 @@ function App() {
               <div className="flex-1 ml-64">
                 <Navbar pageTitle="Employees" />
                 <EmployeesPage />
+              </div>
+            </div>
+          </ProtectedRoute>
+        } />
+        <Route path="/employees/add" element={
+          <ProtectedRoute allowedRoles={['admin','manager']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Add Employee" />
+                <AddEmployeePage />
               </div>
             </div>
           </ProtectedRoute>

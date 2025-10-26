@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTheme } from '../contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
   const { isDarkMode } = useTheme();
+  const navigate = useNavigate();
 
   const stats = [
     {
@@ -159,23 +161,43 @@ const Dashboard = () => {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
+          { (user?.role === 'admin' || user?.role === 'manager') ? (
+            <button onClick={()=>navigate('/employees/add')} className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Add Employee
+                  </p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Create new employee record
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  Add Employee
-                </p>
-                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Create new employee record
-                </p>
+            </button>
+          ) : (
+            <div className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} text-left opacity-60 cursor-not-allowed`}>
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-gray-200 text-gray-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Add Employee
+                  </p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Create new employee record (admin/manager only)
+                  </p>
+                </div>
               </div>
             </div>
-          </button>
+          )}
 
           <button className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
             <div className="flex items-center space-x-3">

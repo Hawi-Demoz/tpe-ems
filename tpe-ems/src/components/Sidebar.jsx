@@ -31,18 +31,13 @@ const Sidebar = () => {
         onClick={() => setCollapsed(!collapsed)}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         title={collapsed ? 'Expand' : 'Collapse'}
-        className="absolute -right-2 top-6 z-50 w-10 h-10 rounded-full bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600 shadow-md hover:scale-105 transform transition-all flex items-center justify-center"
+        aria-expanded={collapsed}
+        className={`absolute -right-1 ${collapsed ? 'top-16' : 'top-5'} z-50 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-600 shadow-sm backdrop-blur-sm hover:shadow-md hover:-translate-y-0.5 transform transition-all duration-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#3B378C]/20`}
       >
-        {/* Chevron icon: points left when expanded (collapse), right when collapsed (expand) */}
-        {collapsed ? (
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        )}
+        {/* Sleek chevron with rotation animation */}
+        <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4 transform transition-transform duration-200 ${collapsed ? 'rotate-180' : 'rotate-0'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
       </button>
 
       {/* Header */}
