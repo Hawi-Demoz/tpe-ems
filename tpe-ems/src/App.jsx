@@ -10,6 +10,8 @@ import LeavesPage from "./features/leaves/LeavesPage";
 import AttendancePage from "./features/attendance/AttendancePage";
 import LoginPage from "./features/auth/LoginPage";
 import Profile from "./pages/Profile";
+import RequestLeavePage from "./features/leaves/RequestLeavePage";
+import ViewReportsPage from "./features/reports/ViewReportsPage";
 
 function App() {
   return (
@@ -77,6 +79,17 @@ function App() {
             </div>
           </ProtectedRoute>
         } />
+        <Route path="/leaves/request" element={
+          <ProtectedRoute allowedRoles={['admin','manager','employee']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Request Leave" />
+                <RequestLeavePage />
+              </div>
+            </div>
+          </ProtectedRoute>
+        } />
         
         <Route path="/attendance" element={
           <ProtectedRoute allowedRoles={['admin', 'manager', 'employee']}>
@@ -85,6 +98,17 @@ function App() {
               <div className="flex-1 ml-64">
                 <Navbar pageTitle="Attendance" />
                 <AttendancePage />
+              </div>
+            </div>
+          </ProtectedRoute>
+        } />
+        <Route path="/reports" element={
+          <ProtectedRoute allowedRoles={['admin','manager']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Reports" />
+                <ViewReportsPage />
               </div>
             </div>
           </ProtectedRoute>

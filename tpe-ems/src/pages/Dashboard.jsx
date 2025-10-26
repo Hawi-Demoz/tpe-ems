@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
@@ -199,7 +199,7 @@ const Dashboard = () => {
             </div>
           )}
 
-          <button className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
+          <button onClick={()=>navigate('/leaves/request')} className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
             <div className="flex items-center space-x-3">
               <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,23 +217,44 @@ const Dashboard = () => {
             </div>
           </button>
 
-          <button className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+          { (user?.role === 'admin' || user?.role === 'manager') ? (
+            <button onClick={()=>navigate('/reports')} className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    View Reports
+                  </p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Generate attendance reports
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  View Reports
-                </p>
-                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Generate attendance reports
-                </p>
+            </button>
+          ) : (
+            <div className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} text-left opacity-60 cursor-not-allowed`}>
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-gray-200 text-gray-600">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    View Reports
+                  </p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Reports (admin/manager only)
+                  </p>
+                </div>
               </div>
             </div>
-          </button>
+          )}
+          
         </div>
       </div>
     </div>
