@@ -1,5 +1,6 @@
 // src/features/auth/LoginPage.jsx
 import React, { useState } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, clearError } from './authSlice';
@@ -11,6 +12,7 @@ const LoginPage = () => {
   const { isLoading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
 
   const validateForm = () => {
     const errors = {};
@@ -53,7 +55,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-white dark:bg-gray-900 transition-all duration-500 font-inter relative">
+    <div className={`${isDarkMode ? 'dark' : ''} min-h-screen flex flex-col items-center justify-center px-4 bg-white dark:bg-gray-900 transition-all duration-500 font-inter relative`}>
       {/* Theme toggle removed */}
 
       {/* Header */}

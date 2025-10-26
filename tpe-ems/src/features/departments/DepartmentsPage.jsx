@@ -5,6 +5,7 @@ const DepartmentsPage = () => {
   const { isDarkMode } = useTheme();
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All Status');
 
   // Mock data
   const departments = [
@@ -60,11 +61,19 @@ const DepartmentsPage = () => {
     }
   ];
 
-  const filteredDepartments = departments.filter(department =>
-    department.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    department.manager.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    department.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredDepartments = departments.filter(department => {
+    const q = searchTerm.trim().toLowerCase();
+    const matchesSearch =
+      q === '' ||
+      department.name.toLowerCase().includes(q) ||
+      department.manager.toLowerCase().includes(q) ||
+      department.location.toLowerCase().includes(q);
+
+    const matchesStatus =
+      statusFilter === 'All Status' || department.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="p-6 pt-20">
@@ -107,15 +116,11 @@ const DepartmentsPage = () => {
             </div>
           </div>
           <div className="flex space-x-2">
-            <select className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
-              <option>All Locations</option>
-              <option>San Francisco</option>
-              <option>New York</option>
-              <option>Los Angeles</option>
-              <option>Chicago</option>
-              <option>Remote</option>
-            </select>
-            <select className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}
+            >
               <option>All Status</option>
               <option>Active</option>
               <option>Inactive</option>

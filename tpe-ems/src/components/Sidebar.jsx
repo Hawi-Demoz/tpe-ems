@@ -22,14 +22,14 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full bg-gray-800 shadow-lg z-10 transition-[width] duration-300 overflow-hidden ${
+      className={`fixed left-0 top-0 h-full bg-gray-800 shadow-lg z-40 transition-[width] duration-300 overflow-hidden ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >
       {/* Collapse/Expand Button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-6 z-20 w-6 h-6 rounded-full bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 flex items-center justify-center text-xs"
+        className="absolute -right-1 top-6 z-50 w-6 h-6 rounded-full bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 flex items-center justify-center text-xs"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         title={collapsed ? 'Expand' : 'Collapse'}
       >
