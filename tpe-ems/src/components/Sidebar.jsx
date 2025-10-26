@@ -29,11 +29,20 @@ const Sidebar = () => {
       {/* Collapse/Expand Button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-1 top-6 z-50 w-6 h-6 rounded-full bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 flex items-center justify-center text-xs"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         title={collapsed ? 'Expand' : 'Collapse'}
+        className="absolute -right-2 top-6 z-50 w-10 h-10 rounded-full bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600 shadow-md hover:scale-105 transform transition-all flex items-center justify-center"
       >
-        {collapsed ? '›' : '‹'}
+        {/* Chevron icon: points left when expanded (collapse), right when collapsed (expand) */}
+        {collapsed ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        )}
       </button>
 
       {/* Header */}
