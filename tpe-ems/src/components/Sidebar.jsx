@@ -13,6 +13,7 @@ const Sidebar = () => {
     { name: 'Departments', path: '/departments', icon: '🏢', roles: ['admin', 'manager'] },
     { name: 'Leaves', path: '/leaves', icon: '📅', roles: ['admin', 'manager', 'employee'] },
     { name: 'Attendance', path: '/attendance', icon: '⏰', roles: ['admin', 'manager', 'employee'] },
+    { name: 'Profile', path: '/profile', icon: '👤', roles: ['admin', 'manager', 'employee'] },
   ];
 
   const filteredNavItems = navItems.filter(item => 

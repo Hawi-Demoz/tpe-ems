@@ -5,66 +5,40 @@ const EmployeesPage = () => {
   const { isDarkMode } = useTheme();
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('All Departments');
+  const [statusFilter, setStatusFilter] = useState('All Status');
 
   // Mock data
   const employees = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@company.com',
-      role: 'Software Engineer',
-      department: 'Engineering',
-      status: 'Active',
-      joinDate: '2023-01-15',
-      avatar: 'JD'
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      email: 'jane.smith@company.com',
-      role: 'Product Manager',
-      department: 'Product',
-      status: 'Active',
-      joinDate: '2022-08-20',
-      avatar: 'JS'
-    },
-    {
-      id: 3,
-      name: 'Mike Johnson',
-      email: 'mike.johnson@company.com',
-      role: 'UX Designer',
-      department: 'Design',
-      status: 'Active',
-      joinDate: '2023-03-10',
-      avatar: 'MJ'
-    },
-    {
-      id: 4,
-      name: 'Sarah Wilson',
-      email: 'sarah.wilson@company.com',
-      role: 'HR Manager',
-      department: 'Human Resources',
-      status: 'Active',
-      joinDate: '2021-11-05',
-      avatar: 'SW'
-    },
-    {
-      id: 5,
-      name: 'David Brown',
-      email: 'david.brown@company.com',
-      role: 'Marketing Specialist',
-      department: 'Marketing',
-      status: 'Inactive',
-      joinDate: '2022-05-12',
-      avatar: 'DB'
-    }
+  { id: 1, name: 'Yohannes Haile', email: 'yohannes.haile@company.com', role: 'Software Engineer', department: 'Engineering', status: 'Inactive', joinDate: '2023-01-15', avatar: 'YH' },
+    { id: 2, name: 'Ruth Asefa', email: 'ruth.asefa@company.com', role: 'Product Manager', department: 'Product', status: 'Active', joinDate: '2022-08-20', avatar: 'RA' },
+  { id: 3, name: 'Liya Abebe', email: 'liya.abebe@company.com', role: 'UX Designer', department: 'Design', status: 'Inactive', joinDate: '2023-03-10', avatar: 'LA' },
+    { id: 4, name: 'Kirubel Kebede', email: 'kirubel.kebede@company.com', role: 'HR Manager', department: 'Human Resources', status: 'Active', joinDate: '2021-11-05', avatar: 'KK' },
+    { id: 5, name: 'David Brown', email: 'david.brown@company.com', role: 'Marketing Specialist', department: 'Marketing', status: 'Active', joinDate: '2022-05-12', avatar: 'DB' },
+    { id: 6, name: 'Fkadu Mekonnen', email: 'fkadu.mekonnen@company.com', role: 'DevOps Engineer', department: 'Infrastructure', status: 'Active', joinDate: '2020-09-01', avatar: 'FM' },
+    { id: 7, name: 'Rahel Abraham', email: 'rahel.abraham@company.com', role: 'Marketing Lead', department: 'Marketing', status: 'Active', joinDate: '2019-06-25', avatar: 'RA' },
+    { id: 8, name: 'Muluken Asfaw', email: 'muluken.asfaw@company.com', role: 'Frontend Engineer', department: 'Engineering', status: 'Active', joinDate: '2021-02-13', avatar: 'MA' },
+    { id: 9, name: 'Kaleb Zewdu', email: 'kaleb.zewdu@company.com', role: 'HR Specialist', department: 'Human Resources', status: 'Active', joinDate: '2022-10-05', avatar: 'KZ' },
+    { id: 10, name: 'Alex Green', email: 'alex.green@company.com', role: 'Data Analyst', department: 'Product', status: 'Active', joinDate: '2024-01-02', avatar: 'AG' }
   ];
 
-  const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.department.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredEmployees = employees.filter(employee => {
+    const q = searchTerm.trim().toLowerCase();
+    const matchesSearch =
+      q === '' ||
+      employee.name.toLowerCase().includes(q) ||
+      employee.email.toLowerCase().includes(q) ||
+      employee.department.toLowerCase().includes(q) ||
+      employee.role.toLowerCase().includes(q);
+
+    const matchesDepartment =
+      departmentFilter === 'All Departments' || employee.department === departmentFilter;
+
+    const matchesStatus =
+      statusFilter === 'All Status' || employee.status === statusFilter;
+
+    return matchesSearch && matchesDepartment && matchesStatus;
+  });
 
   return (
     <div className="p-6 pt-20">
@@ -107,7 +81,11 @@ const EmployeesPage = () => {
             </div>
           </div>
           <div className="flex space-x-2">
-            <select className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
+            <select
+              value={departmentFilter}
+              onChange={(e) => setDepartmentFilter(e.target.value)}
+              className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}
+            >
               <option>All Departments</option>
               <option>Engineering</option>
               <option>Product</option>
@@ -115,7 +93,11 @@ const EmployeesPage = () => {
               <option>Human Resources</option>
               <option>Marketing</option>
             </select>
-            <select className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}
+            >
               <option>All Status</option>
               <option>Active</option>
               <option>Inactive</option>

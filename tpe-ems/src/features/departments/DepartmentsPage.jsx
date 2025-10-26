@@ -11,7 +11,7 @@ const DepartmentsPage = () => {
     {
       id: 1,
       name: 'Engineering',
-      manager: 'John Smith',
+  manager: 'Fkadu Mekonnen',
       employeeCount: 45,
       budget: '$2.5M',
       status: 'Active',
@@ -21,7 +21,7 @@ const DepartmentsPage = () => {
     {
       id: 2,
       name: 'Product',
-      manager: 'Sarah Johnson',
+      manager: 'Liya Abebe',
       employeeCount: 12,
       budget: '$800K',
       status: 'Active',
@@ -31,7 +31,7 @@ const DepartmentsPage = () => {
     {
       id: 3,
       name: 'Design',
-      manager: 'Mike Chen',
+  manager: 'Muluken Asfaw',
       employeeCount: 8,
       budget: '$500K',
       status: 'Active',
@@ -41,7 +41,7 @@ const DepartmentsPage = () => {
     {
       id: 4,
       name: 'Marketing',
-      manager: 'Emily Davis',
+  manager: 'Rahel Abraham',
       employeeCount: 15,
       budget: '$1.2M',
       status: 'Active',
@@ -51,7 +51,7 @@ const DepartmentsPage = () => {
     {
       id: 5,
       name: 'Human Resources',
-      manager: 'David Wilson',
+  manager: 'Kaleb Zewdu',
       employeeCount: 6,
       budget: '$400K',
       status: 'Active',
@@ -229,11 +229,11 @@ const DepartmentsPage = () => {
                 </label>
                 <select className={`w-full px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
                   <option>Select Manager</option>
-                  <option>John Smith</option>
-                  <option>Sarah Johnson</option>
-                  <option>Mike Chen</option>
-                  <option>Emily Davis</option>
-                  <option>David Wilson</option>
+                  <option>Fkadu Mekonnen</option>
+                  <option>Liya Abebe</option>
+                  <option>Muluken Asfaw</option>
+                  <option>Rahel Abraham</option>
+                  <option>Kaleb Zewdu</option>
                 </select>
               </div>
               

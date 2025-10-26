@@ -8,6 +8,7 @@ import DepartmentsPage from "./features/departments/DepartmentsPage";
 import LeavesPage from "./features/leaves/LeavesPage";
 import AttendancePage from "./features/attendance/AttendancePage";
 import LoginPage from "./features/auth/LoginPage";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -72,6 +73,18 @@ function App() {
               <div className="flex-1 ml-64">
                 <Navbar pageTitle="Attendance" />
                 <AttendancePage />
+              </div>
+            </div>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/profile" element={
+          <ProtectedRoute allowedRoles={['admin', 'manager', 'employee']}>
+            <div className="flex">
+              <Sidebar />
+              <div className="flex-1 ml-64">
+                <Navbar pageTitle="Profile Settings" />
+                <Profile />
               </div>
             </div>
           </ProtectedRoute>

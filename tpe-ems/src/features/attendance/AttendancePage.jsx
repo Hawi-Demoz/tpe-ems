@@ -13,7 +13,7 @@ const AttendancePage = () => {
   const attendanceRecords = [
     {
       id: 1,
-      employee: 'John Doe',
+      employee: 'Yohannes Haile',
       date: '2024-01-15',
       checkIn: '09:00 AM',
       checkOut: '06:00 PM',
@@ -23,7 +23,7 @@ const AttendancePage = () => {
     },
     {
       id: 2,
-      employee: 'Jane Smith',
+      employee: 'Ruth Asefa',
       date: '2024-01-15',
       checkIn: '08:45 AM',
       checkOut: '05:30 PM',
@@ -33,7 +33,7 @@ const AttendancePage = () => {
     },
     {
       id: 3,
-      employee: 'Mike Johnson',
+      employee: 'Liya Abebe',
       date: '2024-01-15',
       checkIn: '09:15 AM',
       checkOut: '06:15 PM',
@@ -43,7 +43,7 @@ const AttendancePage = () => {
     },
     {
       id: 4,
-      employee: 'Sarah Wilson',
+      employee: 'Kirubel Kebede',
       date: '2024-01-15',
       checkIn: '10:00 AM',
       checkOut: '07:00 PM',

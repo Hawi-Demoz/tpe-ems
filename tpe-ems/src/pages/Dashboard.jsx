@@ -9,7 +9,7 @@ const Dashboard = () => {
   const stats = [
     {
       title: 'Total Employees',
-      value: '1,234',
+      value: '10',
       change: '+12%',
       changeType: 'positive',
       icon: (
@@ -20,7 +20,7 @@ const Dashboard = () => {
     },
     {
       title: 'Active Today',
-      value: '1,180',
+      value: '10',
       change: '+5%',
       changeType: 'positive',
       icon: (
@@ -31,7 +31,7 @@ const Dashboard = () => {
     },
     {
       title: 'Pending Leaves',
-      value: '23',
+      value: '8',
       change: '-3',
       changeType: 'negative',
       icon: (
@@ -42,7 +42,7 @@ const Dashboard = () => {
     },
     {
       title: 'Departments',
-      value: '12',
+      value: '5',
       change: '+2',
       changeType: 'positive',
       icon: (
@@ -57,14 +57,14 @@ const Dashboard = () => {
     {
       id: 1,
       type: 'employee',
-      message: 'New employee John Doe joined the Engineering team',
+      message: 'New employee Yohannes Haile joined the Engineering team',
       time: '2 hours ago',
       status: 'success'
     },
     {
       id: 2,
       type: 'leave',
-      message: 'Leave request approved for Jane Smith',
+      message: 'Leave request approved for Ruth Asefa',
       time: '4 hours ago',
       status: 'success'
     },

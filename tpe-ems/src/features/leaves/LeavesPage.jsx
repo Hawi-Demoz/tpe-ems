@@ -8,12 +8,13 @@ const LeavesPage = () => {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterType, setFilterType] = useState('all');
 
   // Mock data
   const leaves = [
     {
       id: 1,
-      employee: 'John Doe',
+      employee: 'Yohannes Haile',
       type: 'Annual Leave',
       startDate: '2024-01-15',
       endDate: '2024-01-19',
@@ -21,11 +22,11 @@ const LeavesPage = () => {
       status: 'Approved',
       reason: 'Family vacation',
       appliedDate: '2024-01-10',
-      approvedBy: 'Sarah Johnson'
+      approvedBy: 'Liya Abebe'
     },
     {
       id: 2,
-      employee: 'Jane Smith',
+      employee: 'Ruth Asefa',
       type: 'Sick Leave',
       startDate: '2024-01-20',
       endDate: '2024-01-22',
@@ -37,27 +38,27 @@ const LeavesPage = () => {
     },
     {
       id: 3,
-      employee: 'Mike Johnson',
-      type: 'Personal Leave',
+      employee: 'Liya Abebe',
+      type: 'Maternity Leave',
       startDate: '2024-01-25',
       endDate: '2024-01-26',
       days: 2,
       status: 'Rejected',
-      reason: 'Personal matters',
+      reason: 'Maternity leave',
       appliedDate: '2024-01-20',
-      approvedBy: 'David Wilson'
+  approvedBy: 'Kaleb Zewdu'
     },
     {
       id: 4,
-      employee: 'Sarah Wilson',
-      type: 'Maternity Leave',
+      employee: 'Kirubel Kebede',
+      type: 'Personal Leave',
       startDate: '2024-02-01',
       endDate: '2024-05-01',
       days: 90,
       status: 'Approved',
-      reason: 'Maternity leave',
+      reason: 'Personal matters',
       appliedDate: '2024-01-15',
-      approvedBy: 'Emily Davis'
+  approvedBy: 'Rahel Abraham'
     }
   ];
 
@@ -65,7 +66,8 @@ const LeavesPage = () => {
     const matchesSearch = leave.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          leave.type.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || leave.status.toLowerCase() === filterStatus.toLowerCase();
-    return matchesSearch && matchesStatus;
+    const matchesType = filterType === 'all' || leave.type.toLowerCase() === filterType.toLowerCase();
+    return matchesSearch && matchesStatus && matchesType;
   });
 
   const getStatusColor = (status) => {
@@ -137,12 +139,12 @@ const LeavesPage = () => {
               <option value="approved">Approved</option>
               <option value="rejected">Rejected</option>
             </select>
-            <select className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
-              <option>All Types</option>
-              <option>Annual Leave</option>
-              <option>Sick Leave</option>
-              <option>Personal Leave</option>
-              <option>Maternity Leave</option>
+            <select value={filterType} onChange={(e)=>setFilterType(e.target.value)} className={`px-4 py-3 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:border-transparent transition-all duration-200`}>
+              <option value="all">All Types</option>
+              <option value="Annual Leave">Annual Leave</option>
+              <option value="Sick Leave">Sick Leave</option>
+              <option value="Personal Leave">Personal Leave</option>
+              <option value="Maternity Leave">Maternity Leave</option>
             </select>
           </div>
         </div>
