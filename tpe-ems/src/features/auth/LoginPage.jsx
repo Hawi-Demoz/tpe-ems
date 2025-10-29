@@ -1,9 +1,10 @@
 // src/features/auth/LoginPage.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginStart, loginSuccess, clearError } from './authSlice';
+import { loginStart, loginSuccess, loginFailure, clearError } from './authSlice';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,8 @@ const LoginPage = () => {
     return errors;
   };
 
-  const handleSubmit = (e) => {
+  // ✅ Handles login with real backend API
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
     setFieldErrors(errors);
@@ -30,20 +32,28 @@ const LoginPage = () => {
     if (Object.keys(errors).length === 0) {
       dispatch(loginStart());
 
-      setTimeout(() => {
-        const userData = {
-          name: 'Demo User',
-          email,
-          role: email.includes('manager')
-            ? 'manager'
-            : email.includes('employee')
-            ? 'employee'
-            : 'admin',
-        };
-        dispatch(loginSuccess(userData));
-        localStorage.setItem('user', JSON.stringify(userData));
+      try {
+        const response = await axios.post(
+          'http://10.190.2.244:3000/auth/login',
+          { email, password },
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+
+        // Extract token and user data
+        const { token, user } = response.data;
+
+        // Dispatch success to Redux
+        dispatch(loginSuccess({ user, token }));
+
+        // Redirect to dashboard
         navigate('/dashboard');
-      }, 1000);
+      } catch (err) {
+        console.error('Login error:', err);
+        const message =
+          err.response?.data?.message ||
+          'Invalid credentials or server error';
+        dispatch(loginFailure(message));
+      }
     }
   };
 
@@ -55,9 +65,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={`${isDarkMode ? 'dark' : ''} min-h-screen flex flex-col items-center justify-center px-4 bg-white dark:bg-gray-900 transition-all duration-500 font-inter relative`}>
-      {/* Theme toggle removed */}
-
+    <div
+      className={`${
+        isDarkMode ? 'dark' : ''
+      } min-h-screen flex flex-col items-center justify-center px-4 bg-white dark:bg-gray-900 transition-all duration-500 font-inter relative`}
+    >
       {/* Header */}
       <div className="text-center mb-10 space-y-2">
         <h1 className="text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">
@@ -69,10 +81,7 @@ const LoginPage = () => {
       </div>
 
       {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-6 text-left"
-      >
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 text-left">
         {/* Email Input */}
         <div>
           <label
@@ -179,15 +188,6 @@ const LoginPage = () => {
           )}
         </button>
       </form>
-
-      {/* Demo Info */}
-      <div className="mt-10 text-sm text-gray-600 dark:text-gray-400 text-center space-y-1">
-        <p className="font-medium text-gray-700 dark:text-gray-300">Demo Accounts</p>
-        <p>Admin: admin@example.com</p>
-        <p>Manager: manager@example.com</p>
-        <p>Employee: employee@example.com</p>
-        <p className="text-xs text-gray-500 dark:text-gray-500">Password: any</p>
-      </div>
 
       {/* Footer */}
       <div className="mt-10 text-xs text-gray-400 dark:text-gray-500">
