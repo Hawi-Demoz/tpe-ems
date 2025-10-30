@@ -87,16 +87,16 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-6 pt-20">
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+        <div className="p-6 pt-20">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
           Welcome back, {user?.name}!
-        </h1>
-        <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          Here's what's happening in your workspace today.
-        </p>
-      </div>
+          </h1>
+          <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Here's what's happening in your workspace today.
+          </p>
+        </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -125,35 +125,35 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6`}>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            Recent Activity
-          </h2>
-          <button className={`text-sm text-[#3B378C] hover:underline font-medium`}>
-            View all
-          </button>
-        </div>
-        
-        <div className="space-y-4">
-          {recentActivities.map((activity) => (
-            <div key={activity.id} className="flex items-start space-x-4 py-3">
-              <div className={`w-2 h-2 rounded-full mt-2 ${
-                activity.status === 'success' ? 'bg-green-500' : 
-                activity.status === 'info' ? 'bg-blue-500' : 'bg-yellow-500'
-              }`}></div>
-              <div className="flex-1">
-                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>
-                  {activity.message}
-                </p>
-                <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} mt-1`}>
-                  {activity.time}
-                </p>
+        <div className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6`}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              Recent Activity
+            </h2>
+            <button className={`text-sm text-[#3B378C] hover:underline font-medium`}>
+              View all
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            {recentActivities.map((activity) => (
+              <div key={activity.id} className="flex items-start space-x-4 py-3">
+                <div className={`w-2 h-2 rounded-full mt-2 ${
+                  activity.status === 'success' ? 'bg-green-500' : 
+                  activity.status === 'info' ? 'bg-blue-500' : 'bg-yellow-500'
+                }`}></div>
+                <div className="flex-1">
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>
+                    {activity.message}
+                  </p>
+                  <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} mt-1`}>
+                    {activity.time}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
       {/* Quick Actions */}
       <div className="mt-8">

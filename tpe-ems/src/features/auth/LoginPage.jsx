@@ -1,19 +1,26 @@
 // src/features/auth/LoginPage.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../../api/axios';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure, clearError } from './authSlice';
+import Footer from '../../components/Footer';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { isLoading, error, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = () => {
     const errors = {};
@@ -33,8 +40,8 @@ const LoginPage = () => {
       dispatch(loginStart());
 
       try {
-        const response = await axios.post(
-          'http://10.190.2.244:3000/auth/login',
+        const response = await api.post(
+          '/auth/login',
           { email, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -45,8 +52,6 @@ const LoginPage = () => {
         // Dispatch success to Redux
         dispatch(loginSuccess({ user, token }));
 
-        // Redirect to dashboard
-        navigate('/dashboard');
       } catch (err) {
         console.error('Login error:', err);
         const message =
@@ -189,10 +194,8 @@ const LoginPage = () => {
         </button>
       </form>
 
-      {/* Footer */}
-      <div className="mt-10 text-xs text-gray-400 dark:text-gray-500">
-        © {new Date().getFullYear()} TPE Employee Management System
-      </div>
+      <Footer />
+
     </div>
   );
 };

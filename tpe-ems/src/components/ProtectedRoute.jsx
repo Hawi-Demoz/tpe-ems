@@ -7,18 +7,29 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const location = useLocation();
 
-  const token = localStorage.getItem("token");
+  // ✅ Use the correct keys from authSlice
+  const token = localStorage.getItem("tpe_token");
+  const storedUser = localStorage.getItem("tpe_user")
+    ? JSON.parse(localStorage.getItem("tpe_user"))
+    : null;
 
-  // 🔐 If not authenticated or token missing → go to login
-  if (!isAuthenticated || !token) {
+  const activeUser = user || storedUser;
+
+  // 🔐 If no token or user, redirect to login
+  if (!token || !activeUser) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // ⚙️ If user's role not in allowed roles → redirect to dashboard
-  if (allowedRoles.length > 0 && (!user?.role || !allowedRoles.includes(user.role))) {
-    return <Navigate to="/dashboard" replace />;
+  // ⚙️ Role-based access control
+  if (
+    allowedRoles.length > 0 &&
+    (!activeUser?.role || !allowedRoles.includes(activeUser.role))
+  ) {
+    // 🛑 User's role is not allowed, redirect to a safe page
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // ✅ Allow rendering if authenticated and role matches
   return children;
 };
 

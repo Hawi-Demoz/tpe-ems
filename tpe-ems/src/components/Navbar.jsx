@@ -2,32 +2,49 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
-const Navbar = ({ pageTitle = "Dashboard" }) => {
+const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
   const { isDarkMode } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showUserMenu, setShowUserMenu] = useState(false);
-  
+
+  const getPageTitle = (pathname) => {
+    const titles = {
+      '/dashboard': 'Dashboard',
+      '/employees': 'Employees',
+      '/employees/add': 'Add Employee',
+      '/departments': 'Departments',
+      '/leaves': 'Leaves',
+      '/leaves/request': 'Request Leave',
+      '/attendance': 'Attendance',
+      '/reports': 'Reports',
+      '/profile': 'Profile Settings',
+    };
+    return titles[pathname] || 'Dashboard';
+  };
+
+  const pageTitle = getPageTitle(location.pathname);
+
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('user');
     navigate('/login');
   };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
     let greeting = 'Good morning';
-    
+
     if (hour >= 12 && hour < 18) {
       greeting = 'Good afternoon';
     } else if (hour >= 18) {
       greeting = 'Good evening';
     }
-    
+
     return greeting;
   };
 
@@ -41,7 +58,7 @@ const Navbar = ({ pageTitle = "Dashboard" }) => {
           {getGreeting()}, {user?.name}
         </span>
       </div>
-      
+
       <div className="flex items-center space-x-4">
         {/* Notifications */}
         <button className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'} transition-colors duration-200`}>
@@ -49,10 +66,10 @@ const Navbar = ({ pageTitle = "Dashboard" }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
         </button>
-        
+
         {/* User Menu */}
         <div className="relative">
-          <button 
+          <button
             onClick={() => setShowUserMenu(!showUserMenu)}
             className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
           >
@@ -71,7 +88,7 @@ const Navbar = ({ pageTitle = "Dashboard" }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          
+
           {/* Dropdown Menu */}
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
@@ -82,8 +99,8 @@ const Navbar = ({ pageTitle = "Dashboard" }) => {
                 Preferences
               </button>
               <hr className="my-1 border-gray-200 dark:border-gray-700" />
-              <button 
-                onClick={() => handleLogout(dispatch, navigate)}
+              <button
+                onClick={handleLogout}
                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
               >
                 Logout

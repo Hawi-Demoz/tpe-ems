@@ -36,7 +36,7 @@ const Profile = () => {
         console.error('Failed to fetch user', err);
       })
       .finally(() => setLoading(false));
-  }, [userId]);
+  }, [userId, user]);
 
   const validate = () => {
     const e = {};

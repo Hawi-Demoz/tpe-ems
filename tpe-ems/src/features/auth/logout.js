@@ -14,3 +14,4 @@ export const handleLogout = (dispatch, navigate) => {
   // Redirect to login
   navigate("/login");
 };
+
