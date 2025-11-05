@@ -5,7 +5,7 @@ import { logout } from '../features/auth/authSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
-const Navbar = () => {
+const Navbar = ({ pageTitle, collapsed = false }) => {
   const { user } = useSelector((state) => state.auth);
   const { isDarkMode } = useTheme();
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Navbar = () => {
     return titles[pathname] || 'Dashboard';
   };
 
-  const pageTitle = getPageTitle(location.pathname);
+  const computedTitle = pageTitle || getPageTitle(location.pathname);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -49,10 +49,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className={`fixed top-0 left-64 right-0 h-16 ${isDarkMode ? 'bg-gray-900' : 'bg-white'} border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} shadow-sm z-10 flex items-center justify-between px-6 transition-colors duration-200`}>
+    <div className={`fixed top-0 ${collapsed ? 'left-16' : 'left-64'} right-0 h-16 ${isDarkMode ? 'bg-gray-900' : 'bg-white'} border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} shadow-sm z-10 flex items-center justify-between px-6 transition-colors duration-200`}>
       <div className="flex items-center space-x-4">
         <h1 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-          {pageTitle}
+          {computedTitle}
         </h1>
         <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
           {getGreeting()}, {user?.name}

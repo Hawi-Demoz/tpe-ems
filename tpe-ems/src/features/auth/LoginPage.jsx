@@ -30,7 +30,7 @@ const LoginPage = () => {
     return errors;
   };
 
-  // ✅ Handles login with real backend API
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
@@ -40,23 +40,25 @@ const LoginPage = () => {
       dispatch(loginStart());
 
       try {
+        const LOGIN_PATH = process.env.REACT_APP_LOGIN_PATH || '/auth/login';
         const response = await api.post(
-          '/auth/login',
+          LOGIN_PATH,
           { email, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-        // Extract token and user data
+        
         const { token, user } = response.data;
 
-        // Dispatch success to Redux
+       
         dispatch(loginSuccess({ user, token }));
 
       } catch (err) {
         console.error('Login error:', err);
         const message =
+          err.normalizedMessage ||
           err.response?.data?.message ||
-          'Invalid credentials or server error';
+          `Login failed (${err?.response?.status || '---'}). Check API path.`;
         dispatch(loginFailure(message));
       }
     }

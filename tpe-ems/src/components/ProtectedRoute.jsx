@@ -14,6 +14,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     : null;
 
   const activeUser = user || storedUser;
+  const normalizedRole = activeUser?.role
+    ? String(activeUser.role).toLowerCase().replace(/\s|_/g, "")
+    : null;
 
   // 🔐 If no token or user, redirect to login
   if (!token || !activeUser) {
@@ -21,12 +24,17 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }
 
   // ⚙️ Role-based access control
-  if (
-    allowedRoles.length > 0 &&
-    (!activeUser?.role || !allowedRoles.includes(activeUser.role))
-  ) {
-    // 🛑 User's role is not allowed, redirect to a safe page
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  // Always allow admin and superadmin full access
+  if (normalizedRole === "admin" || normalizedRole === "superadmin") {
+    return children;
+  }
+
+  if (allowedRoles.length > 0) {
+    const normalizedAllowed = allowedRoles.map((r) => String(r).toLowerCase().replace(/\s|_/g, ""));
+    if (!normalizedRole || !normalizedAllowed.includes(normalizedRole)) {
+      // 🛑 User's role is not allowed, redirect to a safe page
+      return <Navigate to="/login" state={{ from: location }} replace />;
+    }
   }
 
   // ✅ Allow rendering if authenticated and role matches

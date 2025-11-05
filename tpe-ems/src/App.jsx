@@ -1,9 +1,8 @@
 // src/App.jsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import MainLayout from "./components/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import EmployeesPage from "./features/employees/EmployeesPage";
@@ -19,6 +18,8 @@ import { loginSuccess } from "./features/auth/authSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // ✅ Keep user logged in on page reload
   useEffect(() => {
@@ -33,144 +34,84 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Protected Routes */}
         <Route
-          path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={["admin", "manager", "employee"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Dashboard" />
-                  <Dashboard />
-                </div>
-              </div>
+            <ProtectedRoute>
+              <MainLayout collapsed={isSidebarCollapsed} onToggle={() => setIsSidebarCollapsed((v) => !v)} />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/employees"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                <EmployeesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employees/add"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager"]}>
+                <AddEmployeePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/departments"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager"]}>
+                <DepartmentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leaves"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager", "employee"]}>
+                <LeavesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leaves/request"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager", "employee"]}>
+                <RequestLeavePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/attendance"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager", "employee"]}>
+                <AttendancePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager"]}>
+                <ViewReportsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute allowedRoles={["superadmin", "admin", "manager", "employee"]}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
 
-        <Route
-          path="/employees"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Employees" />
-                  <EmployeesPage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/employees/add"
-          element={
-            <ProtectedRoute >
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Add Employee" />
-                  <AddEmployeePage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/departments"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Departments" />
-                  <DepartmentsPage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/leaves"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager", "employee"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Leaves" />
-                  <LeavesPage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/leaves/request"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager", "employee"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Request Leave" />
-                  <RequestLeavePage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/attendance"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager", "employee"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Attendance" />
-                  <AttendancePage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/reports"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Reports" />
-                  <ViewReportsPage />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "manager", "employee"]}>
-              <div className="flex">
-                <Sidebar />
-                <div className="flex-1 ml-64">
-                  <Navbar pageTitle="Profile Settings" />
-                  <Profile />
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
       </Routes>
     </Router>
   );
