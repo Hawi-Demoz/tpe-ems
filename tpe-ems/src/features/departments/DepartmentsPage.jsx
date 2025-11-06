@@ -365,7 +365,8 @@ const DepartmentsPage = () => {
                   setSubmitting(true);
                   setError('');
                   try {
-                    await deleteDepartment(deleting.id || deleting.code);
+                    await deleteDepartment(deleting.id || deleting._id);
+;
                     const data = await fetchDepartments();
                     setDepartments(Array.isArray(data) ? data : []);
                     setDeleting(null);

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const RAW_BASE_URL =
   process.env.REACT_APP_API_URL ||
-  'http://192.168.0.72:3000';
+  'http://192.168.0.102:3002';
 
 const BASE_URL = RAW_BASE_URL.replace(/\/+$/g, '');
 
@@ -11,7 +11,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  // Increase timeout to better handle slower networks/backends
+  timeout: 30000,
 });
 
 api.interceptors.request.use((config) => {
@@ -33,10 +34,16 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error?.response?.data?.message ||
-      error?.message ||
-      'Network error. Please try again.';
+    let message = 'Network error. Please try again.';
+    if (error?.code === 'ECONNABORTED') {
+      message = 'Request timed out. The server did not respond in time.';
+    } else if (error?.message && /Network Error/i.test(error.message)) {
+      message = 'Cannot reach the server. Check your connection and API URL.';
+    } else if (error?.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error?.message) {
+      message = error.message;
+    }
     return Promise.reject({ ...error, normalizedMessage: message });
   }
 );
