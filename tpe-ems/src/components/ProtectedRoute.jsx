@@ -37,7 +37,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     }
   }
 
-  // ✅ Allow rendering if authenticated and role matches
+  //  Allow rendering if authenticated and role matches
   return children;
 };
 
