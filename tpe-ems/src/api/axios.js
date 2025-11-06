@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const RAW_BASE_URL =
   process.env.REACT_APP_API_URL ||
-  'http://192.168.8.123:3000';
+  'http://192.168.0.72:3000';
 
 const BASE_URL = RAW_BASE_URL.replace(/\/+$/g, '');
 
@@ -44,6 +44,7 @@ api.interceptors.response.use(
 export const get = (url, config) => api.get(url, config);
 export const post = (url, data, config) => api.post(url, data, config);
 export const patch = (url, data, config) => api.patch(url, data, config);
+export const del = (url, config) => api.delete(url, config);
 export const upload = (url, data, config = {}) =>
   api.post(url, data, {
     ...config,

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
   const { user } = useSelector((state) => state.auth);
   const [uncontrolledCollapsed, setUncontrolledCollapsed] = useState(false);
@@ -18,6 +17,7 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
     { name: 'Departments', path: '/departments', icon: '🏢', roles: ['superadmin', 'admin', 'manager'] },
     { name: 'Leaves', path: '/leaves', icon: '📅', roles: ['superadmin', 'admin', 'manager', 'employee'] },
     { name: 'Attendance', path: '/attendance', icon: '⏰', roles: ['superadmin', 'admin', 'manager', 'employee'] },
+    { name: 'Profile', path: '/profile', icon: '👤', roles: ['superadmin', 'admin', 'manager', 'employee'] },
   ];
 
   const filteredNavItems = (() => {
@@ -39,11 +39,15 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
       {/* Collapse/Expand Button */}
       <button
         onClick={handleToggle}
-        className="absolute -right-3 top-6 z-20 w-6 h-6 rounded-full bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 flex items-center justify-center text-xs"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         title={collapsed ? 'Expand' : 'Collapse'}
+        aria-expanded={collapsed}
+        className={`absolute -right-1 ${collapsed ? 'top-16' : 'top-5'} z-50 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-600 shadow-sm backdrop-blur-sm hover:shadow-md hover:-translate-y-0.5 transform transition-all duration-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#3B378C]/20`}
       >
-        {collapsed ? '›' : '‹'}
+        {/* Sleek chevron with rotation animation */}
+        <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4 transform transition-transform duration-200 ${collapsed ? 'rotate-180' : 'rotate-0'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
       </button>
 
       {/* Header */}
