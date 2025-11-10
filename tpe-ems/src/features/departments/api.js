@@ -1,6 +1,6 @@
 import { get, post, patch, del } from '../../api/axios';
 
-const DEPARTMENTS_BASE = '/api/departments';
+const DEPARTMENTS_BASE = '/departments';
 
 export const fetchDepartments = async () => {
   const res = await get(DEPARTMENTS_BASE);
