@@ -86,83 +86,121 @@ const Dashboard = () => {
     }
   ];
 
+  const [newActivity, setNewActivity] = React.useState('');
+
+  const handleAddActivity = () => {
+    if (!newActivity.trim()) return;
+    const activity = {
+      id: recentActivities.length + 1,
+      type: 'custom',
+      message: newActivity,
+      time: 'Just now',
+      status: 'info',
+    };
+    recentActivities.unshift(activity);
+    setNewActivity('');
+  };
+
   return (
-        <div className="p-6 pt-20">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+    <div className="p-6 pt-20">
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
           Welcome back, {user?.name}!
-          </h1>
-          <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            Here's what's happening in your workspace today.
-          </p>
+        </h1>
+        <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          Here's what's happening in your workspace today.
+        </p>
+      </div>
+
+      {/* Write Actions Section */}
+      {(user?.role === 'superadmin' || user?.role === 'admin') && (
+        <div className={`mb-8 p-6 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>
+            Write Recent Activity
+          </h2>
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              value={newActivity}
+              onChange={(e) => setNewActivity(e.target.value)}
+              placeholder="Write a new activity..."
+              className={`flex-1 px-4 py-2 rounded-lg border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} focus:ring-2 focus:ring-[#3B378C] focus:outline-none`}
+            />
+            <button
+              onClick={handleAddActivity}
+              className="px-6 py-2 bg-[#3B378C] text-white rounded-lg hover:bg-[#332f7a] transition-all duration-200"
+            >
+              Add
+            </button>
+          </div>
         </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
-          <div key={index} className={`p-6 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} transition-all duration-200 hover:shadow-lg`}>
+          <div
+            key={index}
+            className={`p-6 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} transition-all duration-200 hover:shadow-lg`}
+          >
             <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-lg bg-[#3B378C]/10 text-[#3B378C]`}>
-                {stat.icon}
-              </div>
-              <span className={`text-sm font-medium ${
-                stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-              }`}>
+              <div className={`p-3 rounded-lg bg-[#3B378C]/10 text-[#3B378C]`}>{stat.icon}</div>
+              <span
+                className={`text-sm font-medium ${
+                  stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
                 {stat.change}
               </span>
             </div>
             <div>
-              <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-1`}>
-                {stat.value}
-              </p>
-              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                {stat.title}
-              </p>
+              <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-1`}>{stat.value}</p>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{stat.title}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Recent Activity */}
-        <div className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6`}>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-              Recent Activity
-            </h2>
-            <button className={`text-sm text-[#3B378C] hover:underline font-medium`}>
-              View all
-            </button>
-          </div>
-          
-          <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-start space-x-4 py-3">
-                <div className={`w-2 h-2 rounded-full mt-2 ${
-                  activity.status === 'success' ? 'bg-green-500' : 
-                  activity.status === 'info' ? 'bg-blue-500' : 'bg-yellow-500'
-                }`}></div>
-                <div className="flex-1">
-                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>
-                    {activity.message}
-                  </p>
-                  <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} mt-1`}>
-                    {activity.time}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div
+        className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6`}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Recent Activity</h2>
+          <button className={`text-sm text-[#3B378C] hover:underline font-medium`}>View all</button>
         </div>
+
+        <div className="space-y-4">
+          {recentActivities.map((activity) => (
+            <div key={activity.id} className="flex items-start space-x-4 py-3">
+              <div
+                className={`w-2 h-2 rounded-full mt-2 ${
+                  activity.status === 'success'
+                    ? 'bg-green-500'
+                    : activity.status === 'info'
+                    ? 'bg-blue-500'
+                    : 'bg-yellow-500'
+                }`}
+              ></div>
+              <div className="flex-1">
+                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>{activity.message}</p>
+                <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-500'} mt-1`}>{activity.time}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>
-          Quick Actions
-        </h2>
+        <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          { (user?.role === 'admin' || user?.role === 'manager') ? (
-            <button onClick={()=>navigate('/employees/add')} className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}>
+          {(user?.role === 'admin' || user?.role === 'manager') ? (
+            <button
+              onClick={() => navigate('/employees/add')}
+              className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left`}
+            >
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,17 +208,15 @@ const Dashboard = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Add Employee
-                  </p>
-                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Create new employee record
-                  </p>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Add Employee</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Create new employee record</p>
                 </div>
               </div>
             </button>
           ) : (
-            <div className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} text-left opacity-60 cursor-not-allowed`}>
+            <div
+              className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} text-left opacity-60 cursor-not-allowed`}
+            >
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-lg bg-gray-200 text-gray-600">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,12 +224,8 @@ const Dashboard = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Add Employee
-                  </p>
-                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Create new employee record (admin/manager only)
-                  </p>
+                  <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Add Employee</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Create new employee record (admin/manager only)</p>
                 </div>
               </div>
             </div>

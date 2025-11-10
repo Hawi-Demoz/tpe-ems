@@ -169,18 +169,6 @@ const Profile = () => {
                 {/* Preferences */}
                 <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white">Preferences</h3>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">Dark mode</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Toggle application theme</p>
-                    </div>
-                    <div>
-                      <button onClick={toggleTheme} className={`w-14 h-8 rounded-full p-1 transition ${isDarkMode ? 'bg-[#3B378C]' : 'bg-gray-300'}`} aria-pressed={isDarkMode}>
-                        <div className={`w-6 h-6 bg-white rounded-full transform transition ${isDarkMode ? 'translate-x-6' : 'translate-x-0'}`}></div>
-                      </button>
-                    </div>
-                  </div>
-
                   <div className="mt-4">
                     <p className="text-sm font-medium text-gray-900 dark:text-white">Change password</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">To change password, use the form below (demo: not wired to backend)</p>
