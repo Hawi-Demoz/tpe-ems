@@ -54,7 +54,7 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               title={collapsed ? 'Expand' : 'Collapse'}
               aria-expanded={collapsed}
-              className="relative inline-flex items-center justify-center w-7 h-7 rounded-md text-white/90 hover:text-white border border-white/10 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/20 active:scale-95 overflow-hidden after:absolute after:inset-0 after:rounded-md after:bg-white/20 after:opacity-0 active:after:opacity-100 after:transition-opacity"
+              className="relative inline-flex items-center justify-center w-7 h-7 rounded-md text-white/90 hover:text-white hover:bg-white/10 border border-white/10 backdrop-blur-sm transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-white/20 active:scale-95 active:shadow-inner overflow-hidden after:absolute after:inset-0 after:rounded-md after:bg-white/20 after:opacity-0 active:after:opacity-100 after:transition-opacity"
             >
               {collapsed ? (
                 <PanelLeftOpen className="w-4 h-4" />
