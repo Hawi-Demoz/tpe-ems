@@ -54,7 +54,7 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               title={collapsed ? 'Expand' : 'Collapse'}
               aria-expanded={collapsed}
-              className="relative inline-flex items-center justify-center w-7 h-7 rounded-md text-white/90 hover:text-white hover:bg-white/10 border border-white/10 backdrop-blur-sm transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-white/20 active:scale-95 active:shadow-inner overflow-hidden after:absolute after:inset-0 after:rounded-md after:bg-white/20 after:opacity-0 active:after:opacity-100 after:transition-opacity"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-md text-white/85 hover:text-white border border-white/10 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-white/20 active:bg-white/15"
             >
               {collapsed ? (
                 <PanelLeftOpen className="w-4 h-4" />
@@ -76,20 +76,20 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
         </div>
         {/* Navigation (scrollable) */}
         <div className="flex-1 overflow-y-auto px-1">
-          <nav className="space-y-1.5 pb-6">
+          <nav className="space-y-1 pb-4">
             {filteredNavItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `group flex items-center ${collapsed ? 'justify-center px-2' : 'px-5'} py-2.5 rounded-md text-[0.82rem] font-medium text-white/80 hover:text-white transition-colors tracking-wide ${
-                    isActive ? 'bg-white/15 backdrop-blur-sm text-white border-l-4 border-pink-400 pl-[calc(1.25rem-4px)] shadow-sm' : 'hover:bg-white/8'
+                  `group flex items-center ${collapsed ? 'justify-center px-2' : 'px-5'} py-2.5 rounded-md text-[0.82rem] font-medium text-white/75 hover:text-white transition-colors tracking-wide ${
+                    isActive ? 'bg-white/10 text-white border-l-4 border-pink-400 pl-[calc(1.25rem-4px)]' : 'hover:bg-white/5'
                   }`
                 }
               >
                 {(() => {
                   const Icon = item.Icon;
-                  return <Icon className={`shrink-0 ${collapsed ? '' : 'mr-3'} w-[18px] h-[18px]`} />;
+                  return <Icon className={`shrink-0 ${collapsed ? '' : 'mr-3'} w-[18px] h-[18px] transition-transform duration-150 group-active:scale-95`} />;
                 })()}
                 {!collapsed && <span className="truncate">{item.name}</span>}
               </NavLink>
