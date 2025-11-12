@@ -45,73 +45,77 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
       }`}
       style={sidebarStyle}
     >
-      {/* Header with inline collapse button (shadcn-style ghost button) */}
-      <div className={`pt-4 pb-3 ${collapsed ? 'px-3' : 'px-4'}`}>
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col h-full">
+        {/* Header */}
+        <div className={`pt-6 pb-6 ${collapsed ? 'px-3' : 'px-6'}`}>
+          <div className={`flex flex-col ${collapsed ? 'items-center' : 'items-start'}`}>
+            <button
+              onClick={handleToggle}
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={collapsed ? 'Expand' : 'Collapse'}
+              aria-expanded={collapsed}
+              className="relative inline-flex items-center justify-center w-7 h-7 rounded-md text-white/90 hover:text-white border border-white/10 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/20 active:scale-95 overflow-hidden after:absolute after:inset-0 after:rounded-md after:bg-white/20 after:opacity-0 active:after:opacity-100 after:transition-opacity"
+            >
+              {collapsed ? (
+                <PanelLeftOpen className="w-4 h-4" />
+              ) : (
+                <PanelLeftClose className="w-4 h-4" />
+              )}
+            </button>
+            {collapsed ? (
+              <div className="mt-6 w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold text-base shadow-sm">
+                T
+              </div>
+            ) : (
+              <>
+                <h1 className="mt-7 text-[1.35rem] font-semibold text-white tracking-wide leading-tight">TPE EMS</h1>
+                <p className="text-white/70 text-[0.7rem] mt-2 tracking-wide">Employee Management System</p>
+              </>
+            )}
+          </div>
+        </div>
+        {/* Navigation (scrollable) */}
+        <div className="flex-1 overflow-y-auto px-1">
+          <nav className="space-y-1.5 pb-6">
+            {filteredNavItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `group flex items-center ${collapsed ? 'justify-center px-2' : 'px-5'} py-2.5 rounded-md text-[0.82rem] font-medium text-white/80 hover:text-white transition-colors tracking-wide ${
+                    isActive ? 'bg-white/15 backdrop-blur-sm text-white border-l-4 border-pink-400 pl-[calc(1.25rem-4px)] shadow-sm' : 'hover:bg-white/8'
+                  }`
+                }
+              >
+                {(() => {
+                  const Icon = item.Icon;
+                  return <Icon className={`shrink-0 ${collapsed ? '' : 'mr-3'} w-[18px] h-[18px]`} />;
+                })()}
+                {!collapsed && <span className="truncate">{item.name}</span>}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+        {/* Footer */}
+        <div className={`mt-auto border-t border-white/10 ${collapsed ? 'px-2 py-5' : 'px-6 py-6'}`}>
           {collapsed ? (
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold text-base">
-              T
+            <div className="flex items-center justify-center">
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold shadow-sm">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
             </div>
           ) : (
-            <h1 className="text-xl font-semibold text-white tracking-wide">TPE EMS</h1>
+            <div className="flex items-center">
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold shadow-sm">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+              <div className="ml-3 min-w-0 leading-tight">
+                <p className="text-white font-medium truncate text-[0.83rem] tracking-wide">{user?.name}</p>
+                <p className="text-white/65 text-[0.65rem] capitalize truncate mt-0.5 tracking-wider">{user?.role}</p>
+              </div>
+            </div>
           )}
-          <button
-            onClick={handleToggle}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            title={collapsed ? 'Expand' : 'Collapse'}
-            aria-expanded={collapsed}
-            className="inline-flex items-center justify-center w-7 h-7 rounded-md text-white/90 hover:text-white hover:bg-white/10 border border-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/20"
-          >
-            {collapsed ? (
-              <PanelLeftOpen className="w-4 h-4" />
-            ) : (
-              <PanelLeftClose className="w-4 h-4" />
-            )}
-          </button>
         </div>
-        {!collapsed && <p className="text-white/70 text-xs mt-2">Employee Management System</p>}
-      </div>
-
-      {/* Navigation */}
-      <nav className="mt-3">
-        {filteredNavItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `group flex items-center ${collapsed ? 'justify-center px-3' : 'px-6'} py-3 text-white/80 hover:text-white transition-all duration-200 ${
-                isActive ? 'bg-white/10 text-white border-l-4 border-pink-400' : 'hover:bg-white/5'
-              }`
-            }
-          >
-            {(() => {
-              const Icon = item.Icon;
-              return <Icon className={`shrink-0 ${collapsed ? '' : 'mr-3'} w-5 h-5`} />;
-            })()}
-            {!collapsed && <span className="truncate">{item.name}</span>}
-          </NavLink>
-        ))}
-      </nav>
-
-      {/* Footer (User Info) */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-        {collapsed ? (
-          <div className="flex items-center justify-center">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold">
-              {user?.name?.charAt(0).toUpperCase()}
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center text-white font-bold">
-              {user?.name?.charAt(0).toUpperCase()}
-            </div>
-            <div className="ml-3">
-              <p className="text-white font-medium">{user?.name}</p>
-              <p className="text-white/70 text-sm capitalize">{user?.role}</p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
