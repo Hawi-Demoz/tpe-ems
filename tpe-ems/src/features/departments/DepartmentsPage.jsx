@@ -275,7 +275,11 @@ const DepartmentsPage = () => {
                   if (!payload.name || !payload.code) {
                     throw new Error('Name and Code are required');
                   }
-                  await updateDepartment(editing.id || editing.code, payload);
+                  const updateId = editing.id || editing._id;
+                  if (!updateId) {
+                    throw new Error('Department ID missing for update');
+                  }
+                  await updateDepartment(updateId, payload);
                   const data = await fetchDepartments();
                   setDepartments(Array.isArray(data) ? data : []);
                   setEditing(null);
@@ -365,7 +369,7 @@ const DepartmentsPage = () => {
                   setSubmitting(true);
                   setError('');
                   try {
-                    await deleteDepartment(deleting.id || deleting._id);
+                    await deleteDepartment(deleting);
 ;
                     const data = await fetchDepartments();
                     setDepartments(Array.isArray(data) ? data : []);

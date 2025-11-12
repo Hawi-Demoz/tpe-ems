@@ -9,6 +9,12 @@ module.exports = {
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
       },
+      colors: {
+        brand: '#332F7A',
+        secondary: '#FF5900',
+        accent: '#C43670',
+        sidebar: '#D1E8FC',
+      },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',

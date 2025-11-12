@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const RAW_BASE_URL =
   process.env.REACT_APP_API_URL ||
-  'http://192.168.0.72:3002';
+  'http://192.168.0.102:3002';
 
 const BASE_URL = RAW_BASE_URL.replace(/\/+$/g, '');
 
