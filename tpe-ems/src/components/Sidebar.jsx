@@ -40,7 +40,7 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full shadow-lg z-50 transition-[width] duration-300 overflow-hidden border-r border-white/10 hover:cursor-crosshair hover:shadow-xl ${
+      className={`fixed left-0 top-0 h-full shadow-lg z-50 transition-[width] duration-300 overflow-hidden border-r border-white/10 hover:shadow-xl ${
         collapsed ? 'w-16' : 'w-64'
       }`}
       style={sidebarStyle}
