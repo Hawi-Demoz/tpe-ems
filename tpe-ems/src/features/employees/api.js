@@ -4,13 +4,12 @@ const USERS_BASE = '/users';
 
 export const fetchEmployees = async () => {
   const res = await get(USERS_BASE);
-  return res.data; // Expecting array of users
+  return res.data; 
 };
 
 export const createEmployee = async (payload) => {
-  // payload should include: name, email, password, role (default 'employee')
   const res = await post(USERS_BASE, payload);
-  return res.data; // Expect created user
+  return res.data; 
 };
 
 export const updateEmployee = async (id, payload) => {

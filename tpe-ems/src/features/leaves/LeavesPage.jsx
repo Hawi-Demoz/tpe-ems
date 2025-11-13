@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const LeavesPage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -9,6 +10,7 @@ const LeavesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterType, setFilterType] = useState('all');
+  const navigate = useNavigate();
 
   // Mock data
   const leaves = [
@@ -62,6 +64,16 @@ const LeavesPage = () => {
     }
   ];
 
+  const recentActivities = [
+    {
+      id: 1,
+      type: 'leave',
+      message: 'Leave request approved for Ruth Asefa',
+      time: '4 hours ago',
+      status: 'success'
+    }
+  ];
+
   const filteredLeaves = leaves.filter(leave => {
     const matchesSearch = leave.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          leave.type.toLowerCase().includes(searchTerm.toLowerCase());
@@ -83,8 +95,9 @@ const LeavesPage = () => {
     }
   };
 
-  const canApprove = user?.role === 'admin' || user?.role === 'manager';
-  const canApply = user?.role === 'employee';
+  const normalizedRole = user?.role ? String(user.role).toLowerCase().replace(/\s|_|-/g, '') : null;
+  const canApprove = normalizedRole === 'admin' || normalizedRole === 'manager';
+  const canApply = normalizedRole === 'employee' || normalizedRole === 'superadmin';
 
   return (
     <div className="p-6 pt-20">
@@ -110,6 +123,27 @@ const LeavesPage = () => {
           </button>
         )}
       </div>
+
+      {/* Request Leave Card - Moved from Dashboard */}
+      {canApply && (
+        <button onClick={()=>navigate('/leaves/request')} className={`p-4 rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} hover:border-[#3B378C] transition-all duration-200 text-left mb-6`}>
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-lg bg-[#3B378C]/10 text-[#3B378C]">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <div>
+              <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Request Leave
+              </p>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Submit leave application
+              </p>
+            </div>
+          </div>
+        </button>
+      )}
 
       {/* Search and Filters */}
       <div className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6 mb-6`}>
@@ -238,6 +272,26 @@ const LeavesPage = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Recent Activities */}
+      <div className={`rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-6 mb-6`}>
+        <h2 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>
+          Recent Activities
+        </h2>
+        <ul className="space-y-2">
+          {recentActivities.map((activity) => (
+            <li key={activity.id} className={`flex items-center ${activity.status === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={activity.status === 'success' ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'} />
+              </svg>
+              <div className="text-sm">
+                {activity.message}
+                <span className="text-gray-500 ml-2">({activity.time})</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Apply Leave Modal */}

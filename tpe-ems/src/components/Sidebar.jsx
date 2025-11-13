@@ -31,11 +31,11 @@ const Sidebar = ({ collapsed: controlledCollapsed, onToggle }) => {
     });
   })();
 
-  const primaryIndigo = 'rgb(51, 47, 122)';
+  const primaryIndigo = '#3B378C';
   const sidebarStyle = {
     backgroundColor: primaryIndigo,
     backgroundImage:
-      'linear-gradient(180deg, rgba(51,47,122,1) 0%, rgba(51,47,122,0.96) 55%, rgba(51,47,122,0.92) 100%)',
+      'linear-gradient(180deg, #3B378C 0%, rgba(59,55,140,0.96) 55%, rgba(59,55,140,0.92) 100%)',
   };
 
   return (

@@ -27,7 +27,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Normalize error messages
 api.interceptors.response.use(
   (response) => response,
   (error) => {
